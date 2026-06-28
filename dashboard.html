@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TALIB TYPING - High Court Hindi Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Arial, sans-serif; }
+        .top-bar { background: linear-gradient(90deg, #7A003C 0%, #4A0022 100%); height: 8px; width: 100%; border-bottom: 2px solid #D4AF37; }
+        .main-container { max-width: 950px; width: 95%; margin: 25px auto; background: #ffffff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .title { color: #7A003C; font-weight: 800; font-size: 22px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
+        
+        /* हेडर और ब्रांडिंग को सेंटर में करने के लिए बदलाव */
+        .header-action-area { position: relative; display: flex; justify-content: center; align-items: center; padding: 10px 0; margin-bottom: 15px; }
+        .stylish-brand { font-weight: 700; font-size: 20px; letter-spacing: 3px; color: #7A003C; text-transform: uppercase; padding: 5px 15px; text-align: center; }
+        
+        /* प्रोफाइल बटन को कोने में रखने के लिए absolute पोजीशन */
+        .profile-dropdown { position: absolute; right: 0; top: 8px; display: inline-block; }
+        .profile-trigger-btn { background: #7A003C; color: white; border: none; padding: 6px 15px; border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background 0.2s; }
+        .profile-trigger-btn:hover { background: #5c002d; }
+        
+        .id-card-dropdown { display: none; position: absolute; top: 40px; right: 0; width: 290px; background: white; border-radius: 14px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 1px solid #e2e8f0; z-index: 999; padding: 15px; text-align: center; }
+        .id-card-dropdown.show { display: block; }
+        
+        .id-card-logout-row { display: flex; justify-content: flex-end; margin-bottom: 5px; }
+        .id-card-logout-btn { background: #ef4444; color: white; border: none; font-size: 11px; padding: 3px 10px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .id-card-logout-btn:hover { background: #dc2626; }
+        
+        .id-card-photo-box { width: 85px; height: 85px; background: #e2e8f0; border-radius: 50%; margin: 5px auto 10px auto; display: flex; align-items: center; justify-content: center; border: 3px solid #7A003C; overflow: hidden; color: #718096; font-size: 12px; font-weight: bold; }
+        .id-card-name { font-size: 16px; font-weight: 700; color: #1a202c; margin-bottom: 2px; }
+        .id-card-access-tag { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; font-size: 11px; font-weight: 700; padding: 2px 12px; border-radius: 12px; display: inline-block; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .id-card-details-table { width: 100%; text-align: left; font-size: 12px; border-collapse: collapse; margin-top: 5px; }
+        .id-card-details-table td { padding: 5px 2px; vertical-align: top; color: #4a5568; }
+        .id-card-details-table td.label-cell { font-weight: 600; color: #718096; width: 35%; }
+        .id-card-details-table td.value-cell { color: #1a202c; font-weight: 500; }
+
+        /* स्कोरकार्ड को No. के ऊपर बाईं तरफ करने के लिए */
+        .top-action-panel { display: flex; justify-content: flex-start; align-items: center; margin-bottom: 15px; padding-bottom: 10px; }
+        .btn-overall-result { background: linear-gradient(135deg, #34495e, #2c3e50); color: white; font-weight: bold; border-radius: 6px; padding: 8px 20px; font-size: 14px; border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .btn-overall-result:hover { background: #1a252f; transform: translateY(-2px); }
+
+        .table-responsive { width: 100%; overflow-x: auto; }
+        .custom-table { width: 100%; min-width: 700px; font-size: 15px; border-collapse: separate; border-spacing: 0; }
+        .custom-table th { background: #7A003C !important; color: white !important; font-weight: 600; text-align: center; padding: 14px; border: none; }
+        .custom-table tbody tr:hover { background-color: #fff0f5 !important; }
+        .custom-table td { vertical-align: middle; text-align: center; padding: 12px; border-bottom: 1px solid #eed6e2; }
+        .custom-table .text-start-cell { text-align: left; font-weight: 600; color: #4A0022; padding-left: 15px; }
+
+        .btn-start { background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; font-weight: 600; border-radius: 6px; padding: 6px 20px; font-size: 14px; border: none; cursor: pointer; }
+        .btn-start:hover { background: #219150; }
+        
+        #typingSection, #studentLedgerSection { display: none; }
+        #dashboardSection { display: block; }
+
+        .text-to-type { background: #f1f2f6; padding: 15px; border-radius: 8px; border-left: 5px solid #7A003C; font-size: 20px; line-height: 1.8; color: #2c3e50; margin-bottom: 15px; max-height: 200px; overflow-y: auto; text-align: justify; white-space: pre-line; user-select: none; font-family: 'Mangal', 'Arial Unicode MS', sans-serif; }
+        .typing-textarea { width: 100%; height: 200px; font-size: 20px; padding: 12px; border: 2px solid #ced4da; border-radius: 8px; resize: none; font-family: 'Mangal', 'Arial Unicode MS', sans-serif; }
+        .typing-textarea:focus { border-color: #7A003C; outline: none; }
+        
+        .zoom-controls { display: flex; gap: 5px; margin-top: 8px; }
+        .btn-zoom { background-color: #e2e8f0; color: #4a5568; border: 1px solid #cbd5e1; font-weight: bold; font-size: 13px; padding: 2px 10px; border-radius: 4px; transition: all 0.2s; }
+        .btn-zoom:hover { background-color: #cbd5e1; color: #1a202c; }
+        
+        .timer-badge { background-color: #e74c3c; color: white; padding: 6px 12px; border-radius: 6px; font-weight: bold; font-size: 16px; }
+        .word-count-badge { background-color: #34495e; color: white; padding: 6px 10px; border-radius: 6px; font-size: 13px; }
+        .btn-submit { background-color: #3498db; color: white; font-weight: 600; border-radius: 6px; padding: 8px 20px; border: none; font-size: 15px; width: 100%; }
+        
+        .custom-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: center; padding: 15px; }
+        .custom-modal-box { background: white; border-radius: 12px; width: 100%; max-width: 480px; overflow: hidden; }
+        .stat-box { background: #fdfdfd; border: 1px solid #eaeaea; border-radius: 8px; padding: 10px; text-align: center; }
+        .result-title { font-size: 12px; text-transform: uppercase; font-weight: 600; color: #7f8c8d; }
+        .result-val { font-size: 24px; font-weight: 700; color: #7A003C; }
+        .score-highlight { font-size: 30px; color: #d35400; font-weight: 800; }
+        
+        .wrong-item { display: inline-block; background: #fff5f5; border: 1px solid #feb2b2; padding: 4px 8px; margin: 4px; border-radius: 4px; font-size: 13px; }
+        .wrong-text { color: #e53e3e; text-decoration: line-through; font-weight: bold; }
+        .right-text { color: #38a169; font-weight: bold; }
+
+        .btn-view-rank { background-color: #dc3545; color: white; border: none; padding: 4px 14px; border-radius: 15px; font-size: 13px; font-weight: 600; transition: background 0.2s; }
+        .btn-view-rank:hover { background-color: #bd2130; }
+        .ledger-title { color: #4a5568; font-weight: 600; font-size: 20px; border-bottom: 2px dashed #e2e8f0; padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+<div class="top-bar"></div>
+<div class="container-fluid">
+    
+    <!-- DASHBOARD SECTION -->
+    <div class="main-container" id="dashboardSection">
+        
+        <!-- टॉप हेडर एरिया: ब्रांड नाम सेंटर में और प्रोफाइल राइट में -->
+        <div class="header-action-area">
+            <span class="stylish-brand">[ &nbsp;TALIB TYPING&nbsp; ]</span>
+            
+            <!-- ID Card स्टाइल प्रोफ़ाइल ड्रॉपडाउन -->
+            <div class="profile-dropdown">
+                <button class="profile-trigger-btn" onclick="toggleProfileCard(event)">
+                    👤 My Profile
+                </button>
+                <div class="id-card-dropdown" id="studentIdCard">
+                    <div class="id-card-logout-row">
+                        <button class="id-card-logout-btn" onclick="handleLogout()">Logout</button>
+                    </div>
+                    <div class="id-card-photo-box">
+                        <span>PHOTO</span>
+                    </div>
+                    <div class="id-card-name">Aman Sharma</div>
+                    <div class="id-card-access-tag">Limited User Access</div>
+                    
+                    <table class="id-card-details-table">
+                        <tr>
+                            <td class="label-cell">Roll No.</td>
+                            <td class="value-cell" id="cardRollNo">HC-2026-05</td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">Email ID</td>
+                            <td class="value-cell">aman.sharma@example.com</td>
+                        </tr>
+                        <tr>
+                            <td class="label-cell">Institute</td>
+                            <td class="value-cell">Talib Typing Institute</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-4 text-center">
+            <h2 class="title">HIGH COURT OF JUDICATURE FOR RAJASTHAN</h2>
+        </div>
+
+        <!-- स्कोरकार्ड बटन अब S No. के ऊपर बाईं तरफ है -->
+        <div class="top-action-panel">
+            <button class="btn-overall-result" onclick="showStudentLedger()">📊 Scorecard</button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped custom-table align-middle m-0">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">No.</th>
+                        <th style="width: 15%;">Date</th>
+                        <th style="width: 45%;">Test Name</th>
+                        <th style="width: 15%;">Duration</th>
+                        <th style="width: 15%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="testTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- SCORECARD / LEDGER SECTION -->
+    <div class="main-container" id="studentLedgerSection">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="ledger-title text-primary" style="font-family: sans-serif; font-size: 18px;">Scorecard</div>
+            <button class="btn btn-sm btn-dark" onclick="backToDashboardFromLedger()">⬅ Back to Tests</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle text-center" style="font-size: 14px; border-top: 1px solid #dee2e6;">
+                <thead>
+                    <tr style="color: #4a5568; font-weight: 600; border-bottom: 2px solid #dee2e6;">
+                        <th style="padding: 12px; width: 8%;">S No.</th>
+                        <th style="width: 15%;">Date</th>
+                        <th class="text-start" style="padding-left: 20px; width: 45%;">Test Name</th>
+                        <th style="width: 17%;">Total Words</th>
+                        <th style="width: 15%;">View Rank</th>
+                    </tr>
+                </thead>
+                <tbody id="ledgerTableBody" style="color: #4a5568;"></tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- TYPING AREA SECTION -->
+    <div class="main-container" id="typingSection">
+        <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+            <div>
+                <h5 id="activeTestTitle" class="m-0 text-dark fw-bold">Mock Test</h5>
+                <div class="zoom-controls">
+                    <button class="btn-zoom" onclick="changeFontSize(1)">A +</button>
+                    <button class="btn-zoom" onclick="changeFontSize(-1)">A -</button>
+                    <button class="btn-zoom" onclick="resetFontSize()">Reset</button>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div id="wordCountDisplay" class="word-count-badge">Words: 0 / 0</div>
+                <div id="timerDisplay" class="timer-badge">10:00</div>
+                <button class="btn btn-sm btn-outline-danger" onclick="backToDashboard()">Exit</button>
+            </div>
+        </div>
+        <div class="text-to-type" id="masterText"></div>
+        <textarea id="typingBox" class="typing-textarea" placeholder="यहाँ टाइप करना शुरू करें..." autocomplete="off" autocapitalize="off" spellcheck="false" onpaste="return false;" oncopy="return false;" oncut="return false;" oncontextmenu="return false Pap"></textarea>
+        <div class="mt-3">
+            <button class="btn-submit mb-2" onclick="submitTest()">Submit Test</button>
+            <div class="p-2 bg-light rounded text-muted small border-start border-danger" style="font-size: 11px;">
+                ℹ️ <b>Security Enabled:</b> Backspace, Delete, Cut, Paste, Tab पूरी तरह ब्लॉक हैं। ऑटोमेटिक <b>Remington GAIL</b> लेआउट एक्टिव है।
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Windows (Rank, Score, Warning) -->
+<div class="custom-modal-overlay" id="rankModalWrapper">
+    <div class="custom-modal-box" style="max-width: 680px;">
+        <div class="p-3 text-white fw-bold d-flex justify-content-between align-items-center" style="background: #7A003C;">
+            <span id="rankModalTitle">🏆 Test Leaderboard</span>
+            <button class="btn btn-sm btn-close btn-close-white" onclick="closeRankModal()"></button>
+        </div>
+        <div class="p-3" style="max-height: 350px; overflow-y: auto;">
+            <table class="table table-sm table-bordered text-center m-0" style="font-size: 13px;">
+                <thead class="table-light">
+                    <tr>
+                        <th>Rank</th>
+                        <th>Roll No.</th>
+                        <th>Time Taken</th>
+                        <th>Gross Speed</th>
+                        <th>Net Speed</th>
+                        <th>Accuracy</th>
+                        <th>Score out of 50</th>
+                    </tr>
+                </thead>
+                <tbody id="rankTableBody"></tbody>
+            </table>
+        </div>
+        <div class="p-2 bg-light border-top text-center">
+            <button class="btn btn-secondary btn-sm" onclick="closeRankModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<div class="custom-modal-overlay" id="resultModalWrapper">
+    <div class="custom-modal-box">
+        <div class="p-3 text-white fw-bold" style="background: #7A003C;">⚖️ HC Examination Scorecard</div>
+        <div class="p-3">
+            <div class="stat-box mb-3" style="background: #fff9e6; border: 1px solid #ffeaa7;">
+                <div class="result-title">Calculated Marks (Out of 50)</div>
+                <div class="score-highlight" id="resMarks">0.00 / 50</div>
+            </div>
+            <div class="row g-2">
+                <div class="col-6"><div class="stat-box"><div class="result-title">Gross Speed</div><div class="result-val text-dark" id="resGrossWPM">0 WPM</div></div></div>
+                <div class="col-6"><div class="stat-box"><div class="result-title">Net Speed</div><div class="result-val text-success" id="resNetWPM">0 WPM</div></div></div>
+                <div class="col-6"><div class="stat-box"><div class="result-title">Accuracy</div><div class="result-val text-primary" id="resAccuracy">0%</div></div></div>
+                <div class="col-6"><div class="stat-box"><div class="result-title">Time Taken</div><div class="result-val text-secondary" id="resTime">0:00</div></div></div>
+            </div>
+            <div class="bg-light mt-3 p-2 rounded text-center small text-secondary">
+                Typed: <b class="text-dark" id="resTotalWords">0</b> |
+                Correct: <b class="text-success" id="resCorrectWords">0</b> |
+                Wrong: <b class="text-danger" id="resWrongWords">0</b>
+            </div>
+            <div id="wrongWordsWrapper" class="mt-2 p-2 rounded bg-light border-start border-danger" style="display: none; max-height: 150px; overflow-y: auto; text-align: left;">
+                <span class="text-danger fw-bold small" style="font-size: 13px;">❌ गलतियाँ विश्लेषण:</span>
+                <div id="resWrongWordsList" class="mt-1" style="word-break: break-word;"></div>
+            </div>
+        </div>
+        <div class="p-2 bg-light border-top text-center">
+            <button type="button" class="btn text-white w-100 fw-bold" style="background: #7A003C;" onclick="closeResultModal()">Back to Dashboard</button>
+        </div>
+    </div>
+</div>
+
+<div class="custom-modal-overlay" id="warningModalWrapper">
+    <div class="custom-modal-box" style="border-top: 4px solid #e74c3c;">
+        <div class="p-3 text-white fw-bold d-flex align-items-center gap-2" style="background: #7A003C;">
+            <span>⚠️ ध्यान दें (System Warning)</span>
+        </div>
+        <div class="p-4 text-center">
+            <div class="text-danger mb-2" style="font-size: 42px;">🛑</div>
+            <h5 class="fw-bold text-dark mb-2" id="warningModalMessage">आपने कुछ भी टाइप नहीं किया है!</h5>
+            <p class="text-muted small mb-0">कृपया टेस्ट सबमिट करने से पहले टेस्ट बॉक्स में मैटर टाइप करना शुरू करें।</p>
+        </div>
+        <div class="p-3 bg-light border-top text-center">
+            <button type="button" class="btn text-white w-100 fw-bold" style="background: #7A003C; border-radius: 6px; padding: 10px;" onclick="closeWarningModal()">OK</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const legalTemplates = [
+    {
+        p1: "मामले के अनुसार परिवादी ने police थाने में एक लिखित रिपोर्ट दर्ज कराई कि पुरानी रंजिश के चलते अभियुक्तगण घातक हथियारों से लैस होकर उसके निवास स्थान पर आए। वहां आते ही उन्होंने गाली-गलौज शुरू कर दी और जब परिवादी के भाई ने बीच-बचाव करने का प्रयास किया तो मुख्य अभियुक्त ने जान से मारने की नियत से अवैध पिस्तौल से फायर कर दिया। गोली सीधे पीड़ित के कंधे पर लगी और वह गंभीर रूप से आहत होकर जमीन पर गिर गया।",
+        p2: "मजिस्ट्रेट के समक्ष प्रस्तुत साक्ष्यों के अनुसार पुलिस ने तुरंत कार्रवाई करते हुए दंड प्रक्रिया संहिता की सुसंगत धाराओं में मुकदमा पंजीकृत कर अनुसंधान अधिकारी को नियुक्त किया। जांच अधिकारी ने घटना स्थल का बारीकी से निरीक्षण कर वहां से खाली कारतूस और खून से सनी मिट्टी को जप्त किया। गवाहों के बयान धारा 161 के तहत लेखबद्ध किए गए और अभियुक्तों की गिरफ्तारी सुनिश्चित की गई।",
+        p3: "अधीनस्थ विचारण न्यायालय ने अभियोजन पक्ष द्वारा प्रस्तुत मौखिक एवं दस्तावेजी साक्ष्यों का समग्र मूल्यांकन करने के उपरांत यह निष्कर्ष निकाला कि आरोपी पर लगाए गए आरोप संदेह से परे सिद्ध होते हैं। चिकित्सा अधिकारी की रिपोर्ट से स्पष्ट है कि यदि समय पर प्राथमिक उपचार न मिलता तो चोट जीवन के लिए घातक हो सकती थी। अतः अभियुक्त को दोषी पाते हुए कठोर कारावास और अर्थदंड से दंडित किया जाता है।"
+    }
+];
+const testDatabase = [];
+const REGISTERED_STUDENT_ROLL = localStorage.getItem('logged_in_roll') || "HC-2026-05"; 
+
+let examSubmissions = [
+    { id: 1, testName: "HC - HINDI LEGAL TEST - NO. 1", date: "01-06-2026", totalWords: 620, rollNo: "HC-2026-01", gross: 56, net: 54, acc: 98, score: 38.50, timeStr: "10:00" },
+    { id: 2, testName: "HC - HINDI LEGAL TEST - NO. 1", date: "01-06-2026", totalWords: 620, rollNo: "HC-2026-02", gross: 51, net: 48, acc: 95, score: 34.20, timeStr: "09:45" 

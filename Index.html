@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TALIB TYPING ACADEMY</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body { 
+            background-color: #f8f9fd; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 20%;
+            left: -10%;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(122, 0, 60, 0.05) 0%, rgba(248, 249, 253, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        .portal-header {
+            background: linear-gradient(135deg, #7A003C 0%, #4A0022 100%);
+            color: #ffffff; padding: 25px 15px; text-align: center;
+            border-bottom: 4px solid #D4AF37; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15); position: relative;
+            z-index: 2;
+        }
+        .official-badge { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #D4AF37; font-weight: 700; margin-bottom: 6px; display: block; }
+        .portal-header h1 { font-size: 26px; font-weight: 800; margin-bottom: 5px; letter-spacing: 1px; text-shadow: 1px 2px 4px rgba(0,0,0,0.3); }
+        .portal-header p { font-size: 13px; color: #f0f0f0; opacity: 0.9; margin: 0; font-style: italic; }
+        
+        .login-card { 
+            background: #ffffff; 
+            border: 1px solid rgba(0,0,0,0.04); 
+            border-radius: 20px; 
+            box-shadow: 0 12px 35px rgba(74, 0, 34, 0.06); 
+            margin-top: 25px; 
+            margin-bottom: 25px;
+            padding: 30px 20px; 
+            position: relative;
+            z-index: 3;
+            width: 100%;
+        }
+        @media(min-width: 576px) {
+            .login-card { padding: 35px 30px; }
+        }
+        
+        .signin-header-container { text-align: center; margin-bottom: 28px; position: relative; }
+        .signin-header-title { color: #240012; font-weight: 800; font-size: 22px; letter-spacing: -0.3px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 8px; }
+        .signin-header-title i { color: #7A003C; background: rgba(122, 0, 60, 0.08); padding: 8px; border-radius: 10px; font-size: 19px; border: 1px solid rgba(122, 0, 60, 0.15); }
+        .signin-header-container::after { content: ''; display: block; width: 60px; height: 4px; background: linear-gradient(90deg, #7A003C 0%, #D4AF37 100%); margin: 0 auto; border-radius: 10px; }
+
+        .form-control { border-radius: 8px; padding: 12px; font-size: 15px; background-color: #fcfcfd; border: 1px solid #e2e8f0; color: #2d3748; }
+        .form-control:focus { border-color: #7A003C; box-shadow: 0 0 0 0.2rem rgba(122, 0, 60, 0.12); background-color: #fff; }
+        
+        .password-container { position: relative; }
+        .password-container .form-control { padding-right: 45px; }
+        .toggle-password-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #a0a0a0; cursor: pointer; z-index: 10; padding: 0; font-size: 18px; }
+        .toggle-password-btn:hover { color: #7A003C; }
+        .btn-login { background: linear-gradient(90deg, #7A003C 0%, #5d002e 100%); color: white; font-weight: 600; padding: 12px; border-radius: 8px; border: none; width: 100%; transition: 0.3s; font-size: 16px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-login:hover { background: #4A0022; color: white; box-shadow: 0 5px 15px rgba(122,0,60,0.25); }
+        .register-link, .forgot-link { color: #7A003C; text-decoration: none; font-weight: 600; font-size: 13px; }
+        .register-link:hover, .forgot-link:hover { text-decoration: underline; }
+        
+        .plans-section-title { color: #240012; font-weight: 800; font-size: 16px; margin-top: 15px; margin-bottom: 15px; width: 100%; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .pack-card-box {
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 6px 18px rgba(74, 0, 34, 0.03);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .pack-card-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(122, 0, 60, 0.08);
+        }
+        .pack-card-box.popular {
+            border: 2px solid #D4AF37;
+            background: linear-gradient(135deg, #ffffff 0%, #fffdf6 100%);
+        }
+        .verified-tick {
+            color: #198754;
+            font-size: 18px;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        .pack-box-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #D4AF37;
+            color: #220010;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-bottom-left-radius: 12px;
+            text-transform: uppercase;
+        }
+        .pack-price {
+            font-size: 24px;
+            font-weight: 800;
+            color: #240012;
+            margin: 12px 0;
+        }
+        .btn-pack-box {
+            background: linear-gradient(90deg, #240012 0%, #4A0022 100%);
+            color: #D4AF37;
+            border: 1px solid #D4AF37;
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 8px;
+            width: 100%;
+            padding: 8px;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+        .btn-pack-box:hover {
+            background: linear-gradient(90deg, #D4AF37 0%, #edd072 100%);
+            color: #240012;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .feature-box { 
+            background: white; 
+            padding: 18px; 
+            border-radius: 12px; 
+            margin-bottom: 15px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
+            border-left: 4px solid #D4AF37; 
+            width: 100%; 
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        .feature-box-icon {
+            font-size: 24px;
+            line-height: 1;
+            margin-top: 2px;
+        }
+        .feature-box-content {
+            flex-grow: 1;
+        }
+        .feature-box h5 { margin: 0 0 5px 0; font-size: 16px; color: #333; font-weight: 600; }
+        .feature-box p { margin: 0; font-size: 13px; color: #666; line-height: 1.5; }
+
+        .live-stats-bar { background: #ffffff; border: 1px solid rgba(0, 0, 0, 0.05); border-top: 3px solid #7A003C; border-radius: 16px; padding: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); margin-top: 25px; margin-bottom: 40px; width: 100%; }
+        .stat-item { text-align: center; padding: 5px; }
+        .stat-icon { font-size: 22px; color: #7A003C; margin-bottom: 5px; }
+        .stat-number { font-size: 18px; font-weight: 700; color: #222; margin-bottom: 2px; }
+        .stat-label { font-size: 11px; color: #777; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .premium-footer { margin-top: auto; background: #1e1e24; color: #a0a0a8; font-size: 13px; padding: 25px 0; border-top: 3px solid #D4AF37; }
+        .footer-brand { color: #ffffff; font-weight: 700; letter-spacing: 1px; }
+        .footer-brand span { color: #D4AF37; }
+
+        .modal.fade .modal-dialog { transform: scale(0.88); transition: transform 0.25s ease-out; }
+        .modal.show .modal-dialog { transform: scale(1); }
+        .modal-backdrop.show { backdrop-filter: blur(10px) saturate(125%); background-color: rgba(34, 0, 16, 0.45) !important; opacity: 1 !important; }
+        .glass-modal-content { background: rgba(255, 255, 255, 0.92) !important; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.6) !important; border-radius: 24px !important; box-shadow: 0 25px 55px rgba(74, 0, 34, 0.28) !important; }
+
+        .reg-side-banner { background: linear-gradient(135deg, #4A0022 0%, #220010 100%); color: white; padding: 30px; border-top-left-radius: 24px; border-bottom-left-radius: 24px; display: flex; flex-direction: column; justify-content: center; }
+        .reg-instruction-item { display: flex; gap: 12px; margin-bottom: 15px; font-size: 13px; color: #e2e8f0; }
+        .reg-instruction-item i { color: #D4AF37; font-size: 16px; }
+        .input-group-text-custom { background-color: #f1f5f9; border: 1px solid #e2e8f0; border-right: none; color: #64748b; }
+
+        .status-icon-box { width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 5px auto 20px auto; }
+        .status-icon-success { background-color: rgba(25, 135, 84, 0.18); color: #198754; border: 1px solid rgba(25,135,84,0.25); }
+        .status-icon-error { background-color: rgba(220, 53, 69, 0.18); color: #dc3545; border: 1px solid rgba(220,53,69,0.25); }
+        .roll-number-badge { background: linear-gradient(135deg, #7A003C 0%, #4A0022 100%); color: #D4AF37; font-size: 24px; font-weight: 800; padding: 10px 25px; border-radius: 12px; display: inline-block; margin: 15px 0; border: 1px solid #D4AF37; }
+        
+        .upi-option-btn { transition: background 0.2s, transform 0.1s; text-decoration: none !important; cursor: pointer; }
+        .upi-option-btn:hover { transform: scale(1.01); background-color: #ffffff !important; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+
+<div class="portal-header">
+    <span class="official-badge">⚡ SECURE EXAMINATION PANEL ⚡</span>
+    <h1>TALIB TYPING ACADEMY</h1>
+    <p>National High Court Grade Skill Evaluation Engine</p>
+</div>
+
+<div class="container px-2 px-sm-4 flex-grow-1">
+    <div class="row justify-content-center mx-0">
+        <div class="col-12 col-md-10 col-lg-8 col-xl-7 d-flex flex-column align-items-center">
+            
+            <!-- LOGIN CARD -->
+            <div class="login-card" style="max-width: 480px;">
+                <div class="signin-header-container">
+                    <h4 class="signin-header-title">
+                        <i class="bi bi-shield-lock-fill"></i> Student Secure Sign-In
+                    </h4>
+                </div>
+
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label class="form-label text-muted small">Email Address</label>
+                        <input type="email" id="loginEmail" class="form-control" placeholder="Apni registered Email dalein" required>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label text-muted small">Access Password</label>
+                        <div class="password-container">
+                            <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required>
+                            <button type="button" class="toggle-password-btn" data-target="loginPassword">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-end mb-4">
+                        <a href="javascript:void(0)" id="forgotPasswordLink" class="forgot-link">Forgot Password?</a>
+                    </div>
+                    <button type="submit" id="loginBtn" class="btn-login mb-3">
+                        <span id="loginBtnText">Login</span>
+                    </button>
+                </form>
+                <div class="text-center mt-2">
+                    <p class="text-muted small mb-0">Portal par naye hain? 
+                        <a href="#" class="register-link" data-bs-toggle="modal" data-bs-target="#registerModal">Create Account</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- THREE PLAN BOXES -->
+            <h5 class="plans-section-title align-self-start px-1"><i class="bi bi-tags-fill me-1" style="color: #7A003C;"></i> Choose Your Training Plan:</h5>
+            
+            <div class="row row-cols-1 row-cols-sm-3 g-3 w-100 mb-4 align-items-stretch">
+                <div class="col">
+                    <div class="pack-card-box">
+                        <div>
+                            <h6 class="fw-bold text-dark mb-1" style="font-size: 15px;">
+                                Standard Pass <i class="bi bi-patch-check-fill verified-tick"></i>
+                            </h6>
+                            <span class="badge bg-secondary-subtle text-secondary small px-2 py-1" style="font-size: 11px;">1 Month</span>
+                            <p class="text-muted small mt-2 mb-0" style="font-size: 12px; line-height: 1.4;">Basic exam patterns & daily test logging.</p>
+                        </div>
+                        <div>
+                            <div class="pack-price">₹180</div>
+                            <button type="button" class="btn btn-pack-box buy-plan-btn" data-plan="1 Month Standard">Buy Plan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="pack-card-box popular">
+                        <div class="pack-box-badge">POPULAR</div>
+                        <div>
+                            <h6 class="fw-bold text-dark mb-1" style="font-size: 15px;">
+                                Pro Mastery <i class="bi bi-patch-check-fill verified-tick"></i>
+                            </h6>
+                            <span class="badge bg-warning-subtle text-warning-emphasis small px-2 py-1" style="font-size: 11px;">3 Months</span>
+                            <p class="text-muted small mt-2 mb-0" style="font-size: 12px; line-height: 1.4;">Full analytics dashboard + Freeze backspace.</p>
+                        </div>
+                        <div>
+                            <div class="pack-price">₹450</div>
+                            <button type="button" class="btn btn-pack-box buy-plan-btn" data-plan="3 Months Pro">Buy Plan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="pack-card-box">
+                        <div>
+                            <h6 class="fw-bold text-dark mb-1" style="font-size: 15px;">
+                                Elite Pass <i class="bi bi-patch-check-fill verified-tick"></i>
+                            </h6>
+                            <span class="badge bg-danger-subtle text-danger-emphasis small px-2 py-1" style="font-size: 11px;">6 Months</span>
+                            <p class="text-muted small mt-2 mb-0" style="font-size: 12px; line-height: 1.4;">Complete High Court special mock series.</p>
+                        </div>
+                        <div>
+                            <div class="pack-price">₹800</div>
+                            <button type="button" class="btn btn-pack-box buy-plan-btn" data-plan="6 Months Elite">Buy Plan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SYSTEM PLATFORM VERIFICATION -->
+            <h5 class="mb-3 px-1 align-self-start" style="color: #444; font-weight: 700; font-size: 15px; margin-top: 10px;">SYSTEM PLATFORM VERIFICATION:</h5>
+            
+            <div class="feature-box">
+                <div class="feature-box-icon" style="color: #D4AF37;">
+                    <i class="bi bi-cpu-fill"></i>
+                </div>
+                <div class="feature-box-content">
+                    <h5>Talib Certified Dual Engine</h5>
+                    <p>Strict Hindi and English layout algorithms verified for high-accuracy typing benchmarks.</p>
+                </div>
+            </div>
+            
+            <div class="feature-box" style="border-left-color: #7A003C;">
+                <div class="feature-box-icon" style="color: #7A003C;">
+                    <i class="bi bi-shield-fill-check"></i>
+                </div>
+                <div class="feature-box-content">
+                    <h5>High Court Protocol Enforced</h5>
+                    <p>10-minute automated hardware monitoring with full Backspace freeze logic.</p>
+                </div>
+            </div>
+
+            <div class="live-stats-bar">
+                <div class="row">
+                    <div class="col-4 stat-item border-end">
+                        <div class="stat-icon"><i class="bi bi-cpu"></i></div>
+                        <div class="stat-number" style="color: #198754;">99.9%</div>
+                        <div class="stat-label">Server</div>
+                    </div>
+                    <div class="col-4 stat-item border-end">
+                        <div class="stat-icon"><i class="bi bi-shield-check"></i></div>
+                        <div class="stat-number">SSL</div>
+                        <div class="stat-label">Secure</div>
+                    </div>
+                    <div class="col-4 stat-item">
+                        <div class="stat-icon"><i class="bi bi-keyboard"></i></div>
+                        <div class="stat-number">KrutiDev</div>
+                        <div class="stat-label">Layout</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="premium-footer">
+    <div class="container text-center">
+        <div class="footer-brand mb-2">TALIB TYPING <span>ACADEMY</span></div>
+        <p class="mb-1 small">Authorized Skill Evaluation System &copy; 2026. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<!-- REGISTER MODAL -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content glass-modal-content border-0">
+      <div class="row g-0">
+        <div class="col-lg-5 d-none d-lg-flex reg-side-banner">
+            <div class="mb-4">
+                <span style="color: #D4AF37; font-size: 11px; font-weight: 700; letter-spacing: 1px;">OFFICIAL SIGN UP</span>
+                <h3 class="fw-bold text-white mt-1">Join the Academy</h3>
+            </div>
+            <div class="reg-instruction-item">
+                <i class="bi bi-shield-lock-fill"></i>
+                <span>Account bante hi aapko secure Unique Roll No. generate karke diya jayega.</span>
+            </div>
+            <div class="reg-instruction-item">
+                <i class="bi bi-lightning-charge-fill"></i>
+                <span>Live structural database access and real-time report assessment enabled.</span>
+            </div>
+        </div>
+        
+        <div class="col-lg-7 col-12 p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0 text-dark" style="letter-spacing: -0.5px;">Candidate Credentials</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <p class="text-muted small mb-4">Apna official data dhyan se bharein taaki exam sheet verify ho sake.</p>
+          
+          <form id="regForm">
+       
